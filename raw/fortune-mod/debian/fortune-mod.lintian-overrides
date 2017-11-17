@@ -1,0 +1,5 @@
+# Upstream is dead, no homepage is available
+fortune-mod: no-homepage-field
+
+#strfile and unstr are needed by fortune-mod and properly installed in /usr/bin
+fortune-mod: package-section-games-but-has-usr-bin

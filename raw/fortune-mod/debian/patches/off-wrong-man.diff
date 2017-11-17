@@ -1,0 +1,57 @@
+Description: Remove wrong information about offensive fortunes.
+Author: Andrea Colangelo <warp10@ubuntu.com>
+Bug-Debian: http://bugs.debian.org/415831
+Last-Update: 2013-07-06
+
+--- fortune-mod-1.99.1.orig/fortune/fortune-man.part2
++++ fortune-mod-1.99.1/fortune/fortune-man.part2
+@@ -8,16 +8,6 @@ since
+ .B fortune
+ no longer finds the pointers file, it ignores the text file.
+ .SH BUGS
+-The division of fortunes into offensive and non\-offensive by directory,
+-rather than via the `\-o' file infix, is not 100% compatible with
+-original BSD fortune. Although the `\-o' infix is recognised as referring
+-to an offensive database, the offensive database files still need to be
+-in a separate directory.  The workaround, of course, is to move the `\-o'
+-files into the offensive directory (with or without renaming), and to
+-use the
+-.B \-a
+-option.
+-.PP
+ The supplied fortune databases have been attacked, in order to correct
+ orthographical and grammatical errors, and particularly to reduce
+ redundancy and repetition and redundancy.  But especially to avoid
+--- fortune-mod-1.99.1.orig/fortune/fortune-man.part1
++++ fortune-mod-1.99.1/fortune/fortune-man.part1
+@@ -210,30 +210,6 @@ is equivalent to
+ .RI "50% " funny " 50% " not\-funny
+ .sp
+ .RE
+-This fortune also supports the BSD method of appending ``\-o'' to
+-database names to specify offensive fortunes.  However this is
+-.B not
+-how fortune stores them: offensive fortunes are stored in a separate
+-directory without the ``\-o'' infix.  A plain name (i.e., not a path to a
+-file or directory) that ends in ``\-o'' will be assumed to be an
+-offensive database, and will have its suffix stripped off and be
+-searched in the offensive directory (even if the neither of the
+-.IR \-a " or " \-o
+-options were specified).  This feature is not only for
+-backwards\-compatibility, but also to allow users to distinguish between
+-inoffensive and offensive databases of the same name.
+-.PP
+-For example, assuming there is a database named
+-.I definitions
+-in both the inoffensive and potentially offensive collections, then the
+-following command will select an inoffensive definition 90% of the time,
+-and a potentially offensive definition for the remaining 10%:
+-.RS
+-.sp
+-.B fortune
+-90%
+-.I definitions definitions\-o
+-.RE
+ .SH FILES
+ Note: these are the defaults as defined at compile time.
+ .PP

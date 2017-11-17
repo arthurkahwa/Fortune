@@ -1,0 +1,229 @@
+Description: Several fixes to manpages.
+Origin: fortune-mod/1.99.1-4
+
+--- b/fortune/fortune-man.part1
++++ a/fortune/fortune-man.part1
+@@ -50,9 +50,9 @@
+ .SH NAME
+ fortune \- print a random, hopefully interesting, adage
+ .SH SYNOPSIS
+-.BR fortune " [" -acefilosw "] [" -n 
++.BR fortune " [" \-acefilosuw "] [" \-n 
+ .IR length "] ["
+-.B -m 
++.B \-m 
+ .IR pattern "] [[" n% "] " file/dir/all ]
+ .SH DESCRIPTION
+ When
+@@ -63,28 +63,28 @@ into those which are potentially offensive and those which are not.
+ .SS Options
+ The options are as follows:
+ .TP
+-.B -a
++.B \-a
+ Choose from all lists of maxims, both offensive and not.  (See the
+-.B -o 
++.B \-o 
+ option for more information on offensive fortunes.)
+ .TP
+-.B -c
++.B \-c
+ Show the cookie file from which the fortune came.
+ .TP
+-.B -e
++.B \-e
+ Consider all fortune files to be of equal size (see discussion below
+ on multiple files).
+ .TP
+-.B -f
++.B \-f
+ Print out the list of files which would be searched, but don't
+ print a fortune.
+ .TP
+-.B -l
++.B \-l
+ Long dictums only.  See 
+-.B -n
++.B \-n
+ on how ``long'' is defined in this sense.
+ .TP
+-.BI "-m " pattern
++.BI "\-m " pattern
+ Print out all fortunes which match the basic regular expression
+ .IR pattern .
+ The syntax of these expressions depends on how your system defines
+@@ -107,15 +107,15 @@ wish to remove the gathered matches from their original files, since each
+ filename-record will precede the records from the file it names.
+ .RE
+ .TP
+-.BI "-n " length
++.BI "\-n " length
+ Set the longest fortune length (in characters) considered to be
+ ``short'' (the default is 160).  All fortunes longer than this are
+ considered ``long''.  Be careful!  If you set the length too short and
+ ask for short fortunes, or too long and ask for long ones, fortune goes
+ into a never-ending thrash loop.
+ .TP
+-.B -o
+-Choose only from potentially offensive aphorisms.  The -o option is
++.B \-o
++Choose only from potentially offensive aphorisms.  The \-o option is
+ ignored if a fortune directory is specified.
+ .sp
+ .B Please, please, please request a potentially
+@@ -123,7 +123,7 @@ ignored if a fortune directory is specified.
+ .B you believe, deep in your heart,
+ .B that you are willing to be
+ .B offended. (And that you'll just quit
+-.BR using " -o " rather
++.BR using " \-o " rather
+ .B than give us grief about it,
+ .B okay?)
+ .sp
+@@ -137,21 +137,24 @@ needs be.  Needs be.
+ .RE
+ .RE
+ .TP
+-.B -s
++.B \-s
+ Short apothegms only.  See
+-.B -n
++.B \-n
+ on which fortunes are considered ``short''.
+ .TP
+-.B -i
++.B \-i
+ Ignore case for 
+-.IR -m
++.IR \-m
+ patterns.
+ .TP
+-.B -w
++.B \-w
+ Wait before termination for an amount of time calculated from the
+ number of characters in the message.  This is useful if it is executed
+ as part of the logout procedure to guarantee that the message can be
+ read before the screen is cleared.
++.TP
++.B \-u
++Don't translate UTF-8 fortunes to the locale when searching or translating.
+ .PP
+ The user may specify alternate sayings.  You can specify a specific
+ file, a directory which contains one or more files, or the special word 
+@@ -192,11 +195,11 @@ will pick out 90% of its fortunes from
+ (the ``10% not-funny'' is unnecessary, since 10% is all that's left).
+ .PP
+ The 
+-.B -e
++.B \-e
+ option says to consider all files equal; thus
+ .RS
+ .sp
+-.B fortune -e
++.B fortune \-e
+ .I funny not-funny
+ .sp
+ .RE
+@@ -207,15 +210,15 @@ is equivalent to
+ .RI "50% " funny " 50% " not-funny
+ .sp
+ .RE
+-This fortune also supports the BSD method of appending ``-o'' to
++This fortune also supports the BSD method of appending ``\-o'' to
+ database names to specify offensive fortunes.  However this is
+ .B not
+ how fortune stores them: offensive fortunes are stored in a seperate
+-directory without the ``-o'' infix.  A plain name (i.e., not a path to a
+-file or directory) that ends in ``-o'' will be assumed to be an
++directory without the ``\-o'' infix.  A plain name (i.e., not a path to a
++file or directory) that ends in ``\-o'' will be assumed to be an
+ offensive database, and will have its suffix stripped off and be
+ searched in the offensive directory (even if the neither of the
+-.IR -a " or " -o
++.IR \-a " or " \-o
+ options were specified).  This feature is not only for
+ backwards-compatibility, but also to allow users to distinguish between
+ inoffensive and offensive databases of the same name.
+--- b/fortune/fortune-man.part2
++++ a/fortune/fortune-man.part2
+@@ -9,13 +9,13 @@ since
+ no longer finds the pointers file, it ignores the text file.
+ .SH BUGS
+ The division of fortunes into offensive and non-offensive by directory,
+-rather than via the `-o' file infix, is not 100% compatible with
+-original BSD fortune. Although the `-o' infix is recognised as referring
++rather than via the `\-o' file infix, is not 100% compatible with
++original BSD fortune. Although the `\-o' infix is recognised as referring
+ to an offensive database, the offensive database files still need to be
+-in a separate directory.  The workaround, of course, is to move the `-o'
++in a separate directory.  The workaround, of course, is to move the `\-o'
+ files into the offensive directory (with or without renaming), and to
+ use the
+-.B -a
++.B \-a
+ option.
+ .PP
+ The supplied fortune databases have been attacked, in order to correct
+--- b/util/strfile.man
++++ a/util/strfile.man
+@@ -47,10 +47,10 @@ strfile \- create a random access file for storing strings
+ .br
+ unstr \- dump strings in pointer order
+ .SH SYNOPSIS
+-.BR strfile " [" -iorsx "] [" -c
++.BR strfile " [" \-iorsx "] [" \-c
+ .IR char "] " sourcefile " [" outputfile ]
+ .br
+-.BR unstr " [" -c
++.BR unstr " [" \-c
+ .IR char "] " datafile [ .ext ]
+ .RI [ outputfile ]
+ .SH DESCRIPTION
+@@ -84,23 +84,23 @@ to the file specified.
+ .B unstr
+ can also universally change the delimiter character in a strings file.
+ It is possible to create sorted versions of input files by using
+-.B strfile -o 
++.B strfile \-o 
+ and then using 
+ .B unstr 
+ to dump them out in the table order.
+ .SS Options
+ The options are as follows:
+ .TP
+-.BI "-c " char
++.BI "\-c " char
+ Change the delimiting character from the percent sign to 
+ .IR char .
+ This option is available for both
+ .BR strfile " and " unstr .
+ .TP
+-.B -i
++.B \-i
+ Ignore case when ordering the strings.
+ .TP
+-.B -o
++.B \-o
+ Order the strings in alphabetical order.  The offset table will be
+ sorted in the alphabetical order of the groups of lines referenced.
+ Any initial non-alphanumeric characters are ignored. This option
+@@ -108,16 +108,16 @@ causes the STR_ORDERED bit in the header
+ .I str_flags 
+ field to be set. (It also now really does sort! It didn't used to).
+ .TP
+-.B -r
++.B \-r
+ Randomize access to the strings.  Entries in the offset table will be
+ randomly ordered.  This option causes the STR_RANDOM bit in the header 
+ .I str_flags 
+ field to be set. (And really does randomize)
+ .TP
+-.B -s
++.B \-s
+ Run silently; don't give a summary message when finished.
+ .TP
+-.B -x
++.B \-x
+ Note that each alphabetic character in the groups of lines is rotated
+ 13 positions in a simple caesar cypher.  This option causes the
+ STR_ROTATED bit in the header 

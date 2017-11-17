@@ -1,0 +1,18 @@
+Description: Add a nice fortune.
+Author: Andrea Colangelo <warp10@ubuntu.com>
+Bug-Debian: http://bugs.debian.org/570566
+Last-Update: 2014-06-28
+
+--- fortune-mod-1.99.1.orig/datfiles/politics
++++ fortune-mod-1.99.1/datfiles/politics
+@@ -2975,3 +2975,10 @@ the end justifies the means.
+  through is not just good intellectual practice. It is a moral duty."
+     -- Paul Krugman, "In Praise of Cheap Labor"
+ %
++"For the most part, Democrats don't question the Republican's right to govern
++when they win elections"
++
++Heck, Democrats don't question the Republican's right to govern even when
++Democrats win elections.
++    -- Moopheus, on scienceblogs.com
++%

@@ -1,0 +1,76 @@
+Source: fortune-mod
+Section: games
+Priority: optional
+Maintainer: Andrea Colangelo <warp10@ubuntu.com>
+Standards-Version: 3.9.4
+Build-Depends: debhelper (>= 9),
+               dpkg-dev (>= 1.16.1),
+               librecode-dev,
+               recode
+Vcs-Git: git://anonscm.debian.org/collab-maint/fortune-mod.git
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/fortune-mod.git
+
+Package: fortune-mod
+Architecture: any
+Replaces: fortune
+Provides: fortune
+Conflicts: fortune
+Depends: ${shlibs:Depends},
+         ${misc:Depends}
+Recommends: fortunes-min | fortune-cookie-db
+Suggests: fortunes,
+          x11-utils,
+          bsdmainutils
+Description: provides fortune cookies on demand
+ The fortune program displays epigrams, known as fortune cookies,
+ selected randomly from a selection of fortune files.
+ .
+ This package provides the fortune program itself and the programs
+ used for generating the data files. The data files are contained in
+ the fortunes-min, fortunes, and fortunes-off packages.
+
+Package: fortunes-min
+Architecture: all
+Depends: ${misc:Depends}
+Recommends: fortune-mod (>= 9708-12)
+Replaces: fortunes (<= 9708-6)
+Provides: fortune-cookie-db
+Description: Data files containing selected fortune cookies
+ The fortune program displays epigrams, known as fortune cookies,
+ selected randomly from a selection of fortune files.
+ .
+ This package contains a small number of cookies for the bandwidth
+ conscious.
+ .
+ You'll need the fortune-mod package to display the cookies.
+
+Package: fortunes
+Architecture: all
+Recommends: fortune-mod (>= 9708-12)
+Depends: fortunes-min,
+         ${misc:Depends}
+Provides: fortune-cookie-db
+Description: Data files containing fortune cookies
+ The fortune program displays epigrams, known as fortune cookies,
+ selected randomly from a selection of fortune files.
+ .
+ There are far over 15000 different cookies in this package.
+ .
+ You'll need the fortune-mod package to display the cookies.
+
+Package: fortunes-off
+Architecture: all
+Recommends: fortune-mod (>= 9708-12)
+Depends: fortunes,
+         ${misc:Depends}
+Replaces: fortunes (<= 9708-0.1)
+Provides: fortune-cookie-db
+Description: Data files containing offensive fortune cookies
+ The fortune program displays epigrams, known as fortune cookies,
+ selected randomly from a selection of fortune files.
+ .
+ This package contains cookies which some may consider to be
+ offensive. Please do not install this package if you or your users
+ are easily offended.
+ .
+ You'll need the fortune-mod package to display the cookies.
