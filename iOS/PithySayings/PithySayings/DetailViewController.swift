@@ -10,18 +10,30 @@ import UIKit
 
 class DetailViewController: UIViewController {
 
-    @IBOutlet weak var detailDescriptionLabel: UILabel!
-    @IBOutlet weak var sayingTextView: UITextView!
+    
+    @IBOutlet weak var textView: UITextView!
+    var sayingText: String!
     
     func configureView() {
         // Update the user interface for the detail item.
+        
         if let category = categoryItem {
-            if let label = detailDescriptionLabel {
-                label.text = category.name
-                
-                let sayings = category.saying
-                
-                
+            // print("\(String(describing: category.name))")
+            self.navigationItem.title = category.name
+            
+            // self.navigationItem.backBarButtonItem?.title = ""
+            
+            if let sayings = category.sayings as? Set<Saying> {
+                if sayings.isEmpty {
+                    sayingText = "- EMPTY -"
+                }
+                else {
+                    let randomOffset = Int(arc4random_uniform(UInt32(sayings.count)))
+                    let randomIndex = sayings.index(sayings.startIndex, offsetBy: randomOffset)
+                    let randomSaying = sayings[randomIndex]
+                    
+                    sayingText = randomSaying.text
+                }
             }
         }
     }
@@ -30,6 +42,8 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         configureView()
+        
+        textView.text = sayingText
     }
 
     override func didReceiveMemoryWarning() {
@@ -43,7 +57,5 @@ class DetailViewController: UIViewController {
             configureView()
         }
     }
-
-
 }
 

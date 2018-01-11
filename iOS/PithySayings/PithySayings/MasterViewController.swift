@@ -17,10 +17,11 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        navigationItem.leftBarButtonItem = editButtonItem
+        // navigationItem.leftBarButtonItem = editButtonItem
 
-        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
-        navigationItem.rightBarButtonItem = addButton
+        let refreshButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshCategoryObjects(_:)))
+        navigationItem.rightBarButtonItem = refreshButton
+        
         if let split = splitViewController {
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count - 1] as! UINavigationController).topViewController as? DetailViewController
@@ -37,21 +38,57 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         // Dispose of any resources that can be recreated.
     }
 
+    func makeJson(dictionary:NSDictionary) {
+        do {
+            // let json = try JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted)
+            let decoded = try JSONSerialization.data(withJSONObject: dictionary, options: JSONSerialization.WritingOptions.prettyPrinted)
+
+            if let text = NSString(data: decoded, encoding: String.Encoding.utf8.rawValue) {
+                let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+                let firstPath = paths[0]
+                let jsonPath = firstPath.appendingPathComponent("fortune.json")
+                // print(jsonPath)
+
+                try text.write(to: jsonPath, atomically: true, encoding: String.Encoding.utf8.rawValue)
+            }
+        }
+        catch {
+            print(error.localizedDescription)
+        }
+    }
+
     @objc
-    func insertNewObject(_ sender: Any) {
+    func refreshCategoryObjects(_ sender: Any) {
         let context = self.fetchedResultsController.managedObjectContext
+
+        // Empty the datsbase
+        if let storedCategories = self.fetchedResultsController.fetchedObjects {
+            for storedCategory in storedCategories {
+                context.delete(storedCategory)
+            }
+        }
+        
+        // Save the context.
+        do {
+            try context.save()
+        } catch {
+            // Replace this implementation with code to handle the error appropriately.
+            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            let nserror = error as NSError
+            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+        }
         
         var resourceFileDictionary: NSDictionary?
         
         if let plistPath = Bundle.main.path(forResource:"fortune", ofType: "plist") {
             resourceFileDictionary = NSDictionary(contentsOfFile: plistPath)!
         }
-        
+
         if let resourceFileDictionary = resourceFileDictionary {
-            //print(resourceFileDictionary)
+            makeJson(dictionary:resourceFileDictionary)
             
             let keys = resourceFileDictionary.allKeys as? [String]
-            let sortedKeys = keys?.sorted() //.reversed()
+            let sortedKeys = keys //?.sorted() //.reversed()
             
             for key in sortedKeys! {
                 // print("\(key) - \(values)")
@@ -64,7 +101,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                         let newSaying = Saying(context: context)
                         newSaying.text = saying
                         
-                        newCategory.addToSaying(newSaying)
+                        newCategory.addToSayings(newSaying)
                     }
                 }
                 
@@ -86,9 +123,20 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             if let indexPath = tableView.indexPathForSelectedRow {
-            let object = fetchedResultsController.object(at: indexPath)
+            var category = fetchedResultsController.object(at: indexPath)
+                if category.name == "*" {
+                    let allCatgories = fetchedResultsController.fetchedObjects
+                    if (allCatgories?.isEmpty)! {
+                        fatalError("No categories found in Database")
+                    }
+                    else {
+                        let randomOffset = Int(arc4random_uniform(UInt32((allCatgories?.count)!)))
+                        let randomIndex = allCatgories?.index((allCatgories?.startIndex)!, offsetBy: randomOffset)
+                        category = allCatgories![randomIndex!]
+                    }
+                }
                 let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
-                controller.categoryItem = object
+                controller.categoryItem = category
                 controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }
